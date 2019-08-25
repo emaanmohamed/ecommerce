@@ -34,5 +34,6 @@ class CreateCategoryProductTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::drop('products');
         Schema::drop('category_product');
-        Schema::enableForeignKeyConstraints();    }
+        Schema::enableForeignKeyConstraints();
+    }
 }

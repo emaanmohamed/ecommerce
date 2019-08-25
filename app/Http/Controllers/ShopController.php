@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,20 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::inRandomOrder()->take(12)->get();
-        return view('shop', compact('products'));
+      if (request()->category) {
+          $products = Product::with('categories')->whereHas('categories', function ($query) {
+              $query->where('slug', request()->category);
+          })->get();
+          $categories = Category::all();
+          //get returns a collection and first returns a single model instance.. So, the error is because collections don't have a categories method.
+          $categoryName = $categories->where('slug', request()->category)->first()->name;
+
+      } else {
+          $products = Product::inRandomOrder()->take(12)->get();
+          $categories = Category::all();
+          $categoryName = 'Featured';
+      }
+        return view('shop', compact('products', 'categories', 'categoryName'));
     }
 
     /**

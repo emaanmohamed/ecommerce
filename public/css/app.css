@@ -604,6 +604,15 @@ footer {
   color: #919191;
 }
 
+.products-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 .product-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
