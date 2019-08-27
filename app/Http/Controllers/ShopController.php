@@ -15,26 +15,27 @@ class ShopController extends Controller
      */
     public function index()
     {
-      if (request()->category) {
+        $pagination = 9;
+        $categories = Category::all();
+
+        if (request()->category) {
           $products = Product::with('categories')->whereHas('categories', function ($query) {
               $query->where('slug', request()->category);
-          })->get();
-          $categories = Category::all();
+          });
           //get returns a collection and first returns a single model instance.. So, the error is because collections don't have a categories method.
-          $categoryName = $categories->where('slug', request()->category)->first()->name;
+          $categoryName = optional($categories->where('slug', request()->category)->first())->name;
 
       } else {
-          $products = Product::inRandomOrder()->take(12);
-          $categories = Category::all();
+          $products = Product::where('featured', true);
           $categoryName = 'Featured';
       }
 
       if (request()->sort == 'low_high') {
-          $products = $products->orderBy('price')->paginate(9);
+          $products = $products->orderBy('price')->paginate($pagination);
       } elseif (request()->sort == 'high_low') {
-          $products = $products->orderBy('price', 'desc')->paginate(9);
+          $products = $products->orderBy('price', 'desc')->paginate($pagination);
       } else {
-          $products = $products->paginate(9);
+          $products = $products->paginate($pagination);
       }
         return view('shop', compact('products', 'categories', 'categoryName'));
     }

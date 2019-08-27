@@ -37,7 +37,7 @@
             <h3>By Category</h3>
             <ul>
                 @foreach ($categories as $category)
-                    <li ><a href="{{ route('shop.index', ['category' => $category->slug]) }}">{{ $category->name }}</a></li>
+                    <li class="{{ setActiveCategory($category->slug) }}"><a href="{{ route('shop.index', ['category' => $category->slug]) }}">{{ $category->name }}</a></li>
                 @endforeach
             </ul>
         </div> <!-- end sidebar -->
@@ -65,7 +65,8 @@
             </div> <!-- end products -->
 
             <div class="spacer"></div>
-              {{ $products->links() }}
+{{--here with paginate when i select low to high the first page displays prices correctly but when i select the second page the prices not displayed correctly so with appends(request()->input())--}}
+            {{ $products->appends(request()->input())->links() }}
         </div>
     </div>
 
