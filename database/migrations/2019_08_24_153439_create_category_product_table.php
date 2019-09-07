@@ -24,6 +24,7 @@ class CreateCategoryProductTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

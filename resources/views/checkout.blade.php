@@ -18,7 +18,7 @@
         @endif
 
         @if(count($errors) > 0)
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" style="margin-top: 20px">
                 <ul>
                     @foreach($errors->all() as $error )
                         <li>{{ $error }}</li>
@@ -139,6 +139,18 @@
                 <div class="checkout-totals">
                     <div class="checkout-totals-left">
                         Subtotal <br>
+                       @if (session()->has('coupon'))
+                            Discount ({{ session()->get('coupon')['name'] }})
+                            <form action="{{ route('coupon.destroy') }}" method="POST" style="display: inline">
+                                {{ csrf_field() }}
+                                {{ method_field('delete') }}
+                                <button type="submit" class="cart-options" style="background: transparent; font-size: 14px ;font-weight: 300;
+                             padding: 0;" >Remove</button>
+                            </form>
+                            <br>
+                           <hr>
+                           New Subtotal <br>
+                           @endif
                         Tax <br>
                         <span class="checkout-totals-total">Total</span>
 
@@ -146,8 +158,13 @@
 
                     <div class="checkout-totals-right">
                         {{ PresentPrice(Cart::subtotal()) }} <br>
-                        {{ PresentPrice(Cart::tax()) }} <br>
-                        <span class="checkout-totals-total">{{ PresentPrice(Cart::total()) }}</span>
+                        @if (session()->has('coupon'))
+                            {{ PresentPrice($discount) }} <br>
+                            <hr>
+                            {{ PresentPrice($newSubtotal) }} <br>
+                        @endif
+                        {{ PresentPrice($newTax) }} <br>
+                        <span class="checkout-totals-total">{{ PresentPrice($newTotal) }}</span>
 
                     </div>
                 </div> <!-- end checkout-totals -->

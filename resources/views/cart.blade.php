@@ -25,7 +25,7 @@
             @endif
 
             @if(count($errors) > 0)
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" style="margin-top: 20px">
                     <ul>
                         @foreach($errors->all() as $error )
                             <li>{{ $error }}</li>
@@ -81,14 +81,18 @@
 
             </div> <!-- end cart-table -->
 
+                @if (! session()->has('coupon'))
+
             <a href="#" class="have-code">Have a Code?</a>
 
             <div class="have-code-container">
-                <form action="#">
-                    <input type="text">
+                <form action="{{ route('coupon.store') }}" method="POST">
+                    {{ csrf_field() }}
+                    <input type="text" name="coupon_code" id="coupon_code">
                     <input type="submit" class="button" value="Apply">
                 </form>
             </div> <!-- end have-code-container -->
+                    @endif
 
             <div class="cart-totals">
                 <div class="cart-totals-left">
@@ -99,6 +103,7 @@
                 <div class="cart-totals-right">
                     <div>
                         Subtotal <br>
+                        Discount ({{ session()->get('coupon')['name'] }}) <br>
                         Tax (13%)<br>
                         <span class="cart-totals-total">Total</span>
                     </div>
