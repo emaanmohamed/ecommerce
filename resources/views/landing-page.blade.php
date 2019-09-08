@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel Ecommerce Example</title>
+        <title>Laravel Ecommerce</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat%7CRoboto:300,400,700" rel="stylesheet">
@@ -32,8 +32,8 @@
                     <h1>Laravel Ecommerce Demo</h1>
                     <p>Includes multiple products, categories, a shopping cart and a checkout system with Stripe integration.</p>
                     <div class="hero-buttons">
-                        <a href="#" class="button button-white">Blog Post</a>
-                        <a href="#" class="button button-white">GitHub</a>
+                        <a href="www.linkedin.com/in/eman-muhamed" class="button button-white">Screencast</a>
+                        <a href="https://github.com/emaanmohamed" class="button button-white">GitHub</a>
                     </div>
                 </div> <!-- end hero-copy -->
 
