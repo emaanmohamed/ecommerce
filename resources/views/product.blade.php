@@ -28,7 +28,7 @@
             <div class="product-section-price">{{ $product->presentPrice() }}</div>
 
             <p>
-                {{ $product->description }}
+                {!! $product->description !!}
              &nbsp;</p>
 
 {{--            <a href="#" class="button">Add to Cart</a>--}}
