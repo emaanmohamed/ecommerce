@@ -19,9 +19,20 @@
     </div> <!-- end breadcrumbs -->
 
     <div class="product-section container">
-        <div class="product-section-image">
-            <img src="{{ asset('storage/'.$product->image) }}" alt="product">
-{{--            <img src="{{ asset('img/products/'.$product->slug.'.jpg') }}" alt="product">--}}
+        <div>
+            <div class="product-section-image">
+                <img src="{{ productImage($product->image) }}" alt="product">
+
+            </div>
+            <div>
+                @if($product->images)
+                    @foreach(json_decode($product->images, true) as $image)
+                        <img src="{{ productImage($image) }}" alt="product">
+                    @endforeach
+
+                @endif
+
+            </div>
         </div>
         <div class="product-section-information">
             <h1 class="product-section-title">{{ $product->name }}</h1>
@@ -30,9 +41,9 @@
 
             <p>
                 {!! $product->description !!}
-             &nbsp;</p>
+                &nbsp;</p>
 
-{{--            <a href="#" class="button">Add to Cart</a>--}}
+            {{--            <a href="#" class="button">Add to Cart</a>--}}
             <form action="{{route('cart.store')}}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" value="{{ $product->id }}">

@@ -103,12 +103,13 @@
                 <div class="cart-totals-right">
                     <div>
                         Subtotal <br>
-                        Discount ({{ session()->get('coupon')['name'] }}) <br>
+                        Discount ({{ (session()->get('coupon')['name']) ? session()->get('coupon')['name'] : ' ' }}) <br>
                         Tax (13%)<br>
                         <span class="cart-totals-total">Total</span>
                     </div>
                     <div class="cart-totals-subtotal">
                         {{ PresentPrice(Cart::subtotal())  }} <br>
+                        {{session()->get('coupon')['name'] }} <br>
                         {{ PresentPrice(Cart::tax()) }} <br>
                         <span class="cart-totals-total">{{ PresentPrice(Cart::total()) }}</span>
                     </div>
