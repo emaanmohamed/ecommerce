@@ -1,7 +1,7 @@
 <header>
     <div class="top-nav container">
         <div class="logo"><a href="{{ route('landing-page') }}">Ecommerce</a></div>
-        @if (! request()->is('checkout'))
+        @if (! (request()->is('checkout') || request()->is('guestCheckout')))
 {{--            {{ menu('main', 'partials.menus.main') }}--}}
 
             <ul>
@@ -12,7 +12,7 @@
         @endif
 
         <div class="top-nav-right">
-            @if(! request()->is('checkout'))
+            @if(! request()->is('checkout') ||request()->is('guestCheckout'))
 
                 <ul>
                     <li><a href="{{ route('register') }}">Sign Up</a></li>
