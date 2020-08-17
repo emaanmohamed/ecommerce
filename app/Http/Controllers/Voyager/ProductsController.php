@@ -317,20 +317,15 @@ class ProductsController extends VoyagerBaseController
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
-        $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+        $requestNew = $request;
+        $requestNew['price'] = $request->price * 100;
+
+        $this->insertUpdateData($requestNew, $slug, $dataType->editRows, $data);
 
         event(new BreadDataUpdated($dataType, $data));
 
-
-        if($request->category) {
-            foreach ($request->category as $category) {
-                CategoryProduct::create([
-                    'product_id' => $id,
-                    'category_id' => $category
-
-                ]);
-            }
-        }
+        $this->updateProductCategories($request, $id);
 
         return redirect()
             ->route("voyager.{$dataType->slug}.index")
@@ -383,6 +378,7 @@ class ProductsController extends VoyagerBaseController
         }
 
         $allCategories = Category::all();
+        $categoriesForProduct = collect([]);
 
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'allCategories', 'categoriesForProduct'));
     }
@@ -405,20 +401,14 @@ class ProductsController extends VoyagerBaseController
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
-        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+        $requestNew = $request;
+        $requestNew['price'] = $request->price * 100;
+        $data = $this->insertUpdateData($requestNew, $slug, $dataType->addRows, new $dataType->model_name());
 
         event(new BreadDataAdded($dataType, $data));
 
-        if($request->category) {
-            foreach ($request->category as $category) {
-                CategoryProduct::create([
-                    'product_id' => $data->id,
-                    'category_id' => $category
-
-                ]);
-            }
-        }
-
+      $this->updateProductCategories($request, $data->id);
 
         return redirect()
             ->route("voyager.{$dataType->slug}.index")
@@ -744,5 +734,18 @@ class ProductsController extends VoyagerBaseController
 
         // No result found, return empty array
         return response()->json([], 404);
+    }
+
+    protected function updateProductCategories(Request $request, $id)
+    {
+        if ($request->category) {
+            foreach ($request->category as $category) {
+                CategoryProduct::create([
+                    'product_id' => $id,
+                    'category_id' => $category
+                ]);
+            }
+        }
+
     }
 }
