@@ -12,7 +12,7 @@ class EcommerceInstall extends Command
      *
      * @var string
      */
-    protected $signature = 'ecommerce:install';
+    protected $signature = 'ecommerce:install {--force : Do not ask for user information}';
 
     /**
      * The console command description.
@@ -38,7 +38,70 @@ class EcommerceInstall extends Command
      */
     public function handle()
     {
-        $this->callSilent('storage:link');
-        File::copyDirectory(public_path('img/products'), public_path('storage/products/dummy'));
+	    if ($this->option('force')) {
+		    $this->proceed();
+	    } else {
+		    if ($this->confirm('This will delete all your current data and install the default dummy data. Are you sure?')) ;
+		    $this->proceed();
+	    }
     }
+    
+    protected function proceed()
+	    {
+		    File::deleteDirectory(public_path('storage/products/dummy'));
+		    $this->callSilent('storage:link');
+		    $copySuccess = File::copyDirectory(public_path('img/products'), public_path('storage/products/dummy'));
+		    if ($copySuccess) {
+			    $this->info('Image successfully copied to storage folder.');
+		    }
+		    $this->call('migrate:fresh', [
+			    '--seed' => true,
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'VoyagerDatabaseSeeder',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'VoyagerDummyDatabaseSeeder',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'DataTypesTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'DataRowsTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'RolesTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'MenusTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionsTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionRoleTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionRoleTableSeeder',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'MenusTableSeederCustom',
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'UsersTableSeeder',
+		    ]);
+		
+		    $this->info('Dummy data installed.');
+	    }
 }
