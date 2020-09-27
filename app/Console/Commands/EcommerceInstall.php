@@ -38,30 +38,93 @@ class EcommerceInstall extends Command
      */
     public function handle()
     {
-
-        if ($this->confirm('This will delete all your current data and install the default dummy data. Are you sure?'))
-        File::deleteDirectory('storage/products/dummy');
-        $this->callSilent('storage:link');
-        $copySuccess = File::copyDirectory(public_path('img/products'), public_path('storage/products/dummy'));
-        if ($copySuccess) {
-            $this->info('Image successfully copied to storage folder.');
-        }
-        $this->call('migrate:fresh', [
-           '--seed' => true,
-        ]);
-
-        $this->call('db:seed', [
-           '--class' => 'VoyagerDatabaseSeeder',
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'VoyagerDummyDatabaseSeeder',
-        ]);
-
-        $this->call('db:seed', [
-            '--class' => 'MenusTableSeederCustom',
-        ]);
-
-        $this->info('Dummy data installed.');
+	    if ($this->option('force')) {
+		    $this->proceed();
+	    } else {
+		    if ($this->confirm('This will delete all your current data and install the default dummy data. Are you sure?')) ;
+		    $this->proceed();
+	    }
     }
+    
+    protected function proceed()
+	    {
+		    File::deleteDirectory(public_path('storage/products/dummy'));
+		    $this->callSilent('storage:link');
+		    $copySuccess = File::copyDirectory(public_path('img/products'), public_path('storage/products/dummy'));
+		    if ($copySuccess) {
+			    $this->info('Image successfully copied to storage folder.');
+		    }
+		    $this->call('migrate:fresh', [
+			    '--seed' => true,
+			    '--force' => true,
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'VoyagerDatabaseSeeder',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'VoyagerDummyDatabaseSeeder',
+			    '--force' => true,
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'DataTypesTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'DataRowsTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'RolesTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'MenusTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionsTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionRoleTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'PermissionRoleTableSeeder',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'MenusTableSeederCustom',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->call('db:seed', [
+			    '--class' => 'UsersTableSeeder',
+			    '--force' => true,
+		
+		    ]);
+		
+		    $this->info('Dummy data installed.');
+
+	    }
 }
