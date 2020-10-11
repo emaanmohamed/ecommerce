@@ -34,4 +34,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/search');
+Route::get('/search', 'ShopController@search')->name('search');

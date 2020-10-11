@@ -71,7 +71,24 @@ class ShopController extends Controller
     {
         $product = Product::where('slug', $slug)->firstOrFail();
         $mightAlsoLike = Product::where('slug', '!=', $slug)->MightAlsoLike()->get();
+
         return view('product', compact('product', 'mightAlsoLike'));
+    }
+
+    public function search(Request $request)
+    {
+        $this->validate($request, [
+            'query' => 'required|min:3'
+        ]);
+        $query = $request->input('query');
+
+
+//        $products = Product::where('name', 'like', "%$query%")
+//                                     ->orWhere('details', 'like', "%$query%")
+//                                     ->orWhere('description', 'like', "%$query%")->paginate(10);
+        $products = Product::search($query)->paginate(10);
+
+        return view('search-results')->with('products', $products);
     }
 
     /**

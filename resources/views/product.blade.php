@@ -8,15 +8,33 @@
 
 @section('content')
 
-    <div class="breadcrumbs">
+    @component('components.breadcrumbs')
         <div class="container">
             <a href="/">Home</a>
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
             <a href="{{ route('shop.index') }}">Shop</a>
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
-            <span>Macbook Pro</span>
+            <span>{{ $product->name }}</span>
         </div>
-    </div> <!-- end breadcrumbs -->
+    @endcomponent <!-- end breadcrumbs -->
+
+    <div class="container">
+        @if (session()->has('success_message'))
+            <div class="alert alert-success">
+                {{ session()->get('success_message') }}
+            </div>
+        @endif
+
+        @if(count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 
     <div class="product-section container">
         <div>
