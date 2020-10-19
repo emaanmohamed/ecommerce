@@ -11,6 +11,13 @@
       'AsyncWidget' => 'Arrilot\\Widgets\\AsyncFacade',
     ),
   ),
+  'babenkoivan/scout-elasticsearch-driver' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'ScoutElastic\\ScoutElasticServiceProvider',
+    ),
+  ),
   'cartalyst/stripe-laravel' => 
   array (
     'providers' => 
@@ -63,6 +70,13 @@
     'providers' => 
     array (
       0 => 'Larapack\\VoyagerHooks\\VoyagerHooksServiceProvider',
+    ),
+  ),
+  'laravel/scout' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Scout\\ScoutServiceProvider',
     ),
   ),
   'laravel/tinker' => 
